@@ -1,4 +1,4 @@
-'use strict'
+require('dotenv').config()
 
 module.exports = async (_, res) => {
 
