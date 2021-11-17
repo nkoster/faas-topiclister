@@ -6,12 +6,13 @@ module.exports = async (_, res) => {
   const DEV_DELAY = 0
 
   const fs = require('fs')
-  
+  //postgresql://fhirstation:postgres_password_123@fhirstation-database:5432/fhirstation
   const config = {
-    database: process.env.PGDATABASE || 'postgres',
-    user: process.env.PGUSER || 'postgres',
-    host: process.env.PGHOST || 'db.fhirstation.net',
+    database: process.env.PGDATABASE || 'fhirstation',
+    user: process.env.PGUSER || 'fhirstation',
+    host: process.env.PGHOST || 'fhirstation-database',
     port: process.env.PGPORT || '5432',
+    // password: process.env.PGPASSWORD || 'postgres_password_123'
     ssl: {
       rejectUnauthorized: false,
       ca: fs.readFileSync(__dirname + '/tls/root.crt').toString(),
@@ -27,7 +28,7 @@ module.exports = async (_, res) => {
 
   const query = {
     name: 'GimmeTheTopix',
-    text: 'SELECT * FROM dist_kafka_topic'
+    text: 'SELECT * FROM kafka_topic'
   }
 
   const client = await clientPool.connect()
