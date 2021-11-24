@@ -6,8 +6,7 @@ module.exports = async (_, res) => {
   const DEV_DELAY = 0
 
   const fs = require('fs')
-  //postgresql://fhirstation:postgres_password_123@fhirstation-database:5432/fhirstation
-  // postgresql://fhirstation:postgres_password_123@fhirstation-database-coordinator-0.fhirstation-database-coordinator:5432/kafkasearch
+
   const config = {
     database: process.env.PGDATABASE || 'kafkasearch',
     user: process.env.PGUSER || 'fhirstation',
@@ -37,7 +36,7 @@ module.exports = async (_, res) => {
   data = await new Promise(async (resolve, reject) => {
     let result
     try {
-      result = await client.query(query)
+      result = await client.query(query).catch(_ => console.log('Topiclister failed!'))
     } catch (err) {
       reject( { rows: [] } )
       console.log(err.message)
@@ -47,7 +46,7 @@ module.exports = async (_, res) => {
     }    
   })
 
-  DEBUG && console.log('rows:', data.rows.length)
+  DEBUG && console.log('rows:', data?.rows?.length)
 
   if (DEV_DELAY > 0) {
     await new Promise(resolve => setTimeout(resolve, DEV_DELAY))
